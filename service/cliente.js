@@ -78,10 +78,53 @@ const insert = async (id, rut, nombre, apellido, correo) => {
     }
 }
 
-const update = () => {
-
+const update = async (rut, nombre, apellido, correo) => {
+    try {
+        await Cliente.update({
+            nombre,
+            apellido,
+            correo
+        }, {
+            where: {
+                rut
+            }
+        });
+        const clientes = await Cliente.findAll();
+        return {
+            msg: `El cliente con rut ${rut} se actualizó correctamente`,
+            status: 200,
+            datos: clientes.map( cliente => cliente.dataValues)
+        }
+    } catch (error) {
+        console.log(error.message);
+        return {
+            msg: 'Error en el servidor',
+            status: 500,
+            datos: []
+        }
+    }
 }
-const deleteByRut = () => {
-
+const deleteByRut = async (rut) => {
+    try {
+        await Cliente.destroy({
+            where: {
+                rut
+            }
+        });
+        const clientes = await Cliente.findAll();
+        return {
+            msg: `El cliente con rut ${rut} se eliminó correctamente`,
+            status: 200,
+            datos: clientes.map( cliente => cliente.dataValues)
+        }
+    } catch (error) {
+        console.log(error.message);
+        return {
+            msg: 'Error en el servidor',
+            status: 500,
+            datos: []
+        }
+    }
 }
 
+deleteByRut('55555555-5');
