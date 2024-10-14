@@ -127,4 +127,10 @@ const deleteByRut = async (rut) => {
     }
 }
 
-deleteByRut('55555555-5');
+module.exports = {
+    findAll,
+    findByRut,
+    insert,
+    update,
+    deleteByRut
+}
