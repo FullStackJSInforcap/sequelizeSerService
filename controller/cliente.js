@@ -2,15 +2,23 @@ const { findAll, findByRut, insert, update, deleteByRut } = require("../service/
 
 const findAllController = async (req, res) => {
     const respuesta = await findAll();
-    console.log(respuesta);
-    res.send('FindAll');
+    res.render('index', {
+        titulo: 'Inicio',
+        respuesta
+    });
 }
 
 const findByRutController = async (req, res) => {
     const rut = req.query.rut;
     const respuesta = await findByRut(rut);
-    console.log(respuesta);
-    res.send('findByRut');
+    res.render('index', {
+        titulo: 'Búsqueda por rut',
+        respuesta
+    });
+}
+
+const preInsertController = (req, res) => {
+    res.render('insert');
 }
 
 const insertController = async (req, res) => {
@@ -20,8 +28,22 @@ const insertController = async (req, res) => {
     const apellido = req.body.apellido;
     const correo = req.body.correo;
     const respuesta = await insert(id, rut, nombre, apellido, correo);
+    res.render('index', {
+        titulo: 'Post insertar',
+        respuesta
+    });
+}
+
+const preUpdateController = async (req, res) => {
+    const rut = req.query.rut;
+    const respuesta = await findByRut(rut);
+    respuesta.datos = respuesta.datos[0];
     console.log(respuesta);
-    res.send('Insert');
+    
+    res.render('update', {
+        titulo: 'Actualizar',
+        respuesta
+    });
 }
 
 const updateController = async (req, res) => {
@@ -30,21 +52,27 @@ const updateController = async (req, res) => {
     const apellido = req.body.apellido;
     const correo = req.body.correo;
     const respuesta = await update(rut, nombre, apellido, correo);
-    console.log(respuesta);
-    res.send('Update');
+    res.render('index', {
+        titulo: 'Post actualizar',
+        respuesta
+    });
 }
 
 const deleteByRutController = async (req, res) => {
     const rut = req.query.rut;
     const respuesta = await deleteByRut(rut);
-    console.log(respuesta);
-    res.send('deleteByRut');
+    res.render('index', {
+        titulo: 'Eliminado por rut',
+        respuesta
+    });
 }
 
 module.exports = {
     findAllController,
     findByRutController,
+    preInsertController,
     insertController,
+    preUpdateController,
     updateController,
     deleteByRutController
 }
